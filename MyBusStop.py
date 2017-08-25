@@ -12,7 +12,7 @@ class StartApp(QWidget):
     def __init__(self):
         super().__init__()
         self.url = 'http://openapi.jeonju.go.kr/jeonjubus/openApi/traffic/bus_location_busstop_infomation.do'
-        self.key = 'DNPJMXRLEORSXPM'
+        self.key = ''
         self.stop_id_1 = '306101044'  # [31043] 전북대학교(농협앞)
         self.stop_id_2 = '306101049'  # [31048] 전북대학교(한나여성병원앞)
 
