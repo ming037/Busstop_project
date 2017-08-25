@@ -16,6 +16,8 @@ class StartApp(QWidget):
         self.stop_id_1 = '306101044'  # [31043] 전북대학교(농협앞)
         self.stop_id_2 = '306101049'  # [31048] 전북대학교(한나여성병원앞)
 
+        self.staticsoonlabel = QLabel(self)  # 잠시 후 도착 레이블
+        self.staticsoonlabel2 = QLabel(self)
         self.namelabel1 = QLabel(self)  # 정류장 이름
         self.namelabel2 = QLabel(self)
         self.labelgroup = []
@@ -37,20 +39,28 @@ class StartApp(QWidget):
         font = QFont()
         font.setFamily("맑은 고딕")
         font.setBold(True)
-        font.setPointSize(30)
+        font.setPointSize(20)
 
         numberfont = QFont()
         numberfont.setFamily("맑은 고딕")
         numberfont.setBold(True)
 
-        numberfont.setPointSize(35)
+        numberfont.setPointSize(25)
 
-        self.namelabel1.move(190, 70)
-        self.namelabel2.move(1135, 70)
+        self.namelabel1.move(50, 53)
+        self.namelabel2.move(680, 53)
         self.namelabel1.setFont(font)
         self.namelabel2.setFont(font)
-        self.namelabel1.setText("[31043] 전북대학교(농협앞)")
-        self.namelabel2.setText("[31048] 전북대학교(한나여성병원앞)")
+        self.namelabel1.setText("정류장: [31043] 전북대학교(농협앞)")
+        self.namelabel2.setText("정류장: [31048] 전북대학교(한나여성병원앞)")
+
+        self.staticsoonlabel.move(53, 670)
+        self.staticsoonlabel2.move(683, 667)
+        self.staticsoonlabel.setFont(font)
+        self.staticsoonlabel2.setFont(font)
+        self.staticsoonlabel.setText("잠시 후 도착")
+        self.staticsoonlabel2.setText("잠시 후 도착")
+
         # Initialize
         for i in range(1,12):
             self.numberlabels1.append(QLabel(self))
@@ -64,64 +74,64 @@ class StartApp(QWidget):
         # 버스 번호
         inter = 0
         for lbl in self.numberlabels1:
-            lbl.move(50, 215 + inter)
+            lbl.move(30, 157 + inter)
             lbl.setFont(numberfont)
             lbl.setStyleSheet("color:rgb(0,71,193);")
             lbl.setVisible(False)
-            inter += 62
+            inter += 46.4
         inter = 0
         for lbl in self.numberlabels2:
-            lbl.move(1000, 215 + inter)
+            lbl.move(663, 157 + inter)
             lbl.setFont(numberfont)
             lbl.setStyleSheet("color:rgb(0,71,193);")
             lbl.setVisible(False)
-            inter += 62
+            inter += 46.4
         # 대기 시간
         inter = 0
         for lbl in self.waitinglabels1:
-            lbl.move(160, 220 + inter)
+            lbl.move(109, 162 + inter)
             lbl.setFont(font)
             lbl.setStyleSheet("color:rgb(255,100,0);")
-            inter += 62
+            inter += 46.4
             lbl.setVisible(False)
         inter = 0
         for lbl in self.waitinglabels2:
-            lbl.move(1110, 220 + inter)
+            lbl.move(742, 163 + inter)
             lbl.setFont(font)
             lbl.setStyleSheet("color:rgb(255,100,0);")
-            inter += 62
+            inter += 46.4
             lbl.setVisible(False)
         # 현재 위치
         inter = 0
         for lbl in self.currentlabels1:
-            lbl.move(290, 220 + inter)
+            lbl.move(188, 163 + inter)
             lbl.setFont(font)
-            inter += 62
+            inter += 46.4
             lbl.setVisible(False)
 
         inter = 0
         for lbl in self.currentlabels2:
-            lbl.move(1250, 220 + inter)
+            lbl.move(823, 163 + inter)
             lbl.setFont(font)
-            inter += 62
+            inter += 46.4
             lbl.setVisible(False)
         # 행선지
         inter = 0
         for lbl in self.headinglabels1:
-            lbl.move(650, 220 + inter)
+            lbl.move(425, 163 + inter)
             lbl.setFont(font)
-            inter += 62
+            inter += 46.4
             lbl.setVisible(False)
 
         inter = 0
         for lbl in self.headinglabels2:
-            lbl.move(1600, 220 + inter)
+            lbl.move(1060, 163 + inter)
             lbl.setFont(font)
-            inter += 62
+            inter += 46.4
             lbl.setVisible(False)
         # 잠시 후 도착
-        self.soon_arrival1.move(60, 963)
-        self.soon_arrival2.move(1010, 963)
+        self.soon_arrival1.move(30, 712)
+        self.soon_arrival2.move(663, 712)
         self.soon_arrival1.setFont(numberfont)
         self.soon_arrival2.setFont(numberfont)
         self.soon_arrival1.setStyleSheet("color:rgb(42,147,0);")
@@ -138,6 +148,7 @@ class StartApp(QWidget):
 
         self.setWindowTitle('MyBusStop')
         self.show()
+
 
         self.mytimer= QTimer()
         self.mytimer.setInterval(10000)
@@ -194,9 +205,13 @@ class StartApp(QWidget):
                 result_waiting.append(arrival[index])
                 result_current.append(current_pass[index])
                 result_heading.append(heading[index])
+
         for index in range(0, len(soon)):
-            soon_result += line[index]
-            soon_result += ", "
+            if index >= 7:
+                break
+            else:
+                soon_result += line[index]
+                soon_result += ", "
 
         self.print_info(result_numbers, result_waiting, result_current, result_heading, soon_result, position)
 
@@ -246,7 +261,7 @@ class StartApp(QWidget):
                     self.currentlabels2[i].adjustSize()
                     self.currentlabels2[i].setVisible(True)
 
-                    self.headinglabels2[i].setText(heading[i][:8])
+                    self.headinglabels2[i].setText(heading[i][:7])
                     self.headinglabels2[i].adjustSize()
                     self.headinglabels2[i].setVisible(True)
             self.soon_arrival2.setText(soon_info)
@@ -260,3 +275,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = StartApp()
     sys.exit(app.exec_())
+
